@@ -2,7 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
+#include <sstream>
+#include <ctime>
+using namespace std;
 
 class CHaNoiTower
 {
@@ -14,17 +16,24 @@ public:
 
 	// constructor
 	CHaNoiTower();
-	CHaNoiTower(TYPE type, size_t num = 0);
+	CHaNoiTower(TYPE type, size_t numDisk = 3);
 	~CHaNoiTower();
 
 	// method
-	std::string getHistory();
-	bool move(size_t disk, std::string toCol);
+	string getHistory();
+	bool move(size_t disk, string toCol);
 	bool isSolve();
-	std::string status();
-	
+	string status();
+
+protected:
+	void move(size_t fromCol, size_t toCol);
+	void updateHistory(size_t disk, size_t fromCol, size_t toCol);
+	string nameOfCol(size_t numOfCol);
+	size_t numOfCol(string nameOfCol);
 private:
-	std::string History;	// store history move disk
+	string History;	// store history move disk
 	size_t numDisk = 0;
-	std::vector<int> colA, colB, colC;
+	vector<int> col[3];
+	size_t num[3];
+	size_t numMoving = 0;
 };

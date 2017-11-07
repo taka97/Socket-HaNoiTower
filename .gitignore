@@ -1,40 +1,67 @@
 # Prerequisites
+
 *.d
 
+
+
 # Compiled Object files
+
 *.slo
+
 *.lo
+
 *.o
+
 *.obj
 
+
 # Precompiled Headers
+
 *.gch
+
 *.pch
 
+
+
 # Compiled Dynamic libraries
+
 *.so
+
 *.dylib
+
 *.dll
 
+
+
 # Fortran module files
+
 *.mod
+
 *.smod
 
+
+
 # Compiled Static libraries
+
 *.lai
+
 *.la
+
 *.a
+
 *.lib
 
+
+
 # Executables
+
 *.exe
+
 *.out
+
 *.app
 
-Source/Server/Debug/
-Source/Server/Server/Debug/
-Source/Client/Debug/
-Source/Client/Client/Debug/
-Source/Server/.vs/
-Source/Client/.vs/
-*ipch
+Source
+
+Debug/
+.vs/
