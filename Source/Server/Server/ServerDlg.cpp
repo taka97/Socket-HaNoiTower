@@ -12,9 +12,6 @@
 
 // CServerDlg dialog
 
-
-
-
 CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CServerDlg::IDD, pParent)
 	, m_msgString(_T(""))
@@ -100,7 +97,6 @@ void CServerDlg::Split(CString src, CString des[2])
 
 	p2 = src.Find(_T("\r\n"), p1 + 1);
 	des[1] = src.Mid(p1 + 2, p2 - (p1 + 2));
-
 }
 
 char* CServerDlg::ConvertToChar(const CString &s)
@@ -136,7 +132,6 @@ int CServerDlg::mRecv(SOCKET sk, CString &Command)
 	if (Command.GetLength() == 0)
 		return -1;
 	return 0;
-
 }
 
 void CServerDlg::OnBnClickedListen()
@@ -144,8 +139,8 @@ void CServerDlg::OnBnClickedListen()
 	// TODO: Add your control notification handler code here
 
 	UpdateData();
-	sockServer = socket(AF_INET, SOCK_STREAM, 0); // tao socket cho server
-	serverAdd.sin_family = AF_INET;				// giao thuc cho socket TCP/IP hay UDP
+	sockServer = socket(AF_INET, SOCK_STREAM, 0);	 // tao socket cho server
+	serverAdd.sin_family = AF_INET;					// giao thuc cho socket TCP/IP hay UDP
 	serverAdd.sin_port = htons(PORT);				// dang ky socket cho server
 	serverAdd.sin_addr.s_addr = htonl(INADDR_ANY);	// dia chi IP
 	bind(sockServer, (SOCKADDR*)&serverAdd, sizeof(serverAdd));
