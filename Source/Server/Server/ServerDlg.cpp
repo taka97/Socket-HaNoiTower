@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Server.h"
 #include "ServerDlg.h"
+#include "HaNoiTower.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -87,16 +88,18 @@ HCURSOR CServerDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-
-void CServerDlg::Split(CString src, CString des[2])
+void CServerDlg::Split(CString src, CString des[3])
 {
-	int p1, p2;
+	int p1, p2, p3;
 
 	p1 = src.Find(_T("\r\n"), 0);
 	des[0] = src.Mid(0, p1);
 
 	p2 = src.Find(_T("\r\n"), p1 + 1);
 	des[1] = src.Mid(p1 + 2, p2 - (p1 + 2));
+
+	p3 = src.Find(_T("\r\n"), p2 + 1);
+	des[2] = src.Mid(p2 + 2, p3 - (p2 + 2));
 }
 
 char* CServerDlg::ConvertToChar(const CString &s)

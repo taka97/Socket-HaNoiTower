@@ -35,7 +35,7 @@ protected:
 public:
 	LRESULT SockMsg(WPARAM wParam, LPARAM lParam);
 	char* ConvertToChar(const CString &s);
-	void Split(CString src,CString des[2]);
+	void Split(CString src,CString des[3]);
 	void mSend(SOCKET sk, CString Command);
 	int mRecv(SOCKET sk, CString &Command);
 
@@ -53,7 +53,7 @@ public:
 	int number_Socket;
 	int first_send;
 	SockName *pSock;
-	CString strResult[2];
+	CString strResult[3];
 	CString Command;
 	int R;
 
