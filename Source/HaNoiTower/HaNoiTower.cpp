@@ -3,35 +3,28 @@ using namespace std;
 
 CHaNoiTower::CHaNoiTower()
 {
-	History = string();
-	numDisk = 3;
-	for (size_t i = 0; i < 3; i++)
-	{
-		col[i].resize(numDisk);
-		num[i] = 0;
-	}
+	init(3);
 
 	for (num[0] = 0; num[0] < numDisk; num[0]++)
 		col[0][num[0]] = numDisk - num[0];
 }
 
-CHaNoiTower::CHaNoiTower(TYPE type, size_t numDisk)
+CHaNoiTower::CHaNoiTower(size_t numDisk, TYPE type)
 {
 	srand(time(NULL));
 	switch (type)
 	{
 	case NORMAL:
-		CHaNoiTower();
+		init(numDisk);
+		for (num[0] = 0; num[0] < numDisk; num[0]++)
+			col[0][num[0]] = numDisk - num[0];
 		break;
 	case RANDOM:
-		size_t i;
-		for (i = 0; i < 3; i++)
-		{
-			col[i].resize(numDisk);
-			num[i] = 0;
-		}
+		init(numDisk);
 
+		size_t i;
 		size_t R;
+
 		for (size_t i = 0; i < numDisk; i++)
 		{
 			R = rand() % 3;
@@ -48,6 +41,11 @@ CHaNoiTower::~CHaNoiTower()
 string CHaNoiTower::getHistory()
 {
 	return History;
+}
+
+size_t CHaNoiTower::getNumMoving()
+{
+	return numMoving;
 }
 
 bool CHaNoiTower::move(size_t disk, string toCol)
@@ -71,12 +69,10 @@ bool CHaNoiTower::move(size_t disk, string toCol)
 
 	posCol = numOfCol(toCol);
 
-	if (num[posCol] == 0)
+	if (num[posCol] == 0 || disk < col[posCol][num[posCol] - 1])
 		move(posCol, posDisk);
-	else if (disk > col[posCol][num[posCol] - 1])
-		return false;
 	else
-		move(posCol, posDisk);
+		return false;
 
 	return true;
 }
@@ -109,9 +105,12 @@ string CHaNoiTower::status()
 	return ss.str();
 }
 
-void CHaNoiTower::move(size_t fromCol, size_t toCol)
+void CHaNoiTower::move(size_t toCol, size_t fromCol)
 {
-	col[toCol][num[toCol]++] = col[fromCol][num[fromCol]--];
+	col[toCol][num[toCol]] = col[fromCol][num[fromCol] - 1];
+	num[toCol]++;
+	num[fromCol]--;
+	numMoving++;
 	updateHistory(col[toCol][num[toCol] - 1], fromCol, toCol);
 }
 
@@ -147,4 +146,15 @@ size_t CHaNoiTower::numOfCol(string nameOfCol)
 		return 1;
 	else
 		return 2;
+}
+
+void CHaNoiTower::init(size_t numDisk)
+{
+	History = string();
+	this->numDisk = numDisk;
+	for (size_t i = 0; i < 3; i++)
+	{
+		col[i].resize(numDisk);
+		num[i] = 0;
+	}
 }

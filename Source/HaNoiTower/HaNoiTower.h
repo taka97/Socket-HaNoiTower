@@ -16,20 +16,22 @@ public:
 
 	// constructor
 	CHaNoiTower();
-	CHaNoiTower(TYPE type, size_t numDisk = 3);
+	CHaNoiTower(size_t numDisk = 3, TYPE type = NORMAL);
 	~CHaNoiTower();
 
 	// method
 	string getHistory();
+	size_t getNumMoving();
 	bool move(size_t disk, string toCol);
 	bool isSolve();
 	string status();
 
 protected:
-	void move(size_t fromCol, size_t toCol);
+	void move(size_t toCol, size_t fromCol);
 	void updateHistory(size_t disk, size_t fromCol, size_t toCol);
 	string nameOfCol(size_t numOfCol);
 	size_t numOfCol(string nameOfCol);
+	void init(size_t numDisk);
 private:
 	string History;	// store history move disk
 	size_t numDisk = 0;
