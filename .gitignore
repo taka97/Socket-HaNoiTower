@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+Source/Server/Debug/
+Source/Server/Server/Debug/
+Source/Client/Debug/
+Source/Client/Client/Debug/
+Source/Server/.vs/
+Source/Client/.vs/
+*ipch
