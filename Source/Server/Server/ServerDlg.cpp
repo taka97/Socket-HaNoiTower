@@ -207,7 +207,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			break;
 		Split(temp, strResult);
 		int flag = _ttoi(strResult[0]);
-		int disk = _ttoi(strResult[1]);
+		int playflag = _ttoi(strResult[1]);
 		char* tem = ConvertToChar(strResult[2]);
 		switch (flag)
 		{
@@ -238,6 +238,9 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				Command = _T("1\r\n0\r\n");
 			mSend(wParam, Command);
 			UpdateData(FALSE);
+
+			startGame = true;
+			endGame = false;
 
 			break;
 		}
@@ -291,7 +294,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			break;
 		}
 
-		case 3: //Logout -> End game
+		case 3: //Logout
 		{
 			int post = -1;
 			for (int i = 0; i < number_Socket; i++)
@@ -302,7 +305,6 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 						post = i;
 				}
 			}
-
 
 			m_msgString += pSock[post].Name;	//edit
 			m_msgString += " logout\r\n";		//edit

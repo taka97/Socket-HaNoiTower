@@ -9,11 +9,7 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CClientDlg dialog
-
-
-
 
 CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CClientDlg::IDD, pParent)
@@ -30,6 +26,8 @@ void CClientDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_MSGBOX, m_msgString);
 	DDX_Text(pDX, IDC_IP, IP);
 	DDX_Text(pDX, IDC_USER, m_userName);
+	DDX_Text(pDX, IDC_DISK, disk);
+	DDX_Text(pDX, IDC_TOCOL, toCol);
 }
 
 BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
@@ -41,6 +39,7 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
 	ON_BN_CLICKED(IDC_LOGOUT, &CClientDlg::OnBnClickedLogout)
 	ON_BN_CLICKED(IDC_ADD, &CClientDlg::OnBnClickedAdd)
 	ON_BN_CLICKED(IDC_SUBTRACT, &CClientDlg::OnBnClickedSubtract)
+	ON_BN_CLICKED(IDC_GIVEUP, &CClientDlg::OnBnClickedGiveup)
 END_MESSAGE_MAP()
 
 
@@ -101,14 +100,19 @@ HCURSOR CClientDlg::OnQueryDragIcon()
 
 void CClientDlg::Split(CString src, CString des[2])
 {
-	int p1, p2;
+	int p1, p2, p3;
 
+	// type of command
 	p1 = src.Find(_T("\r\n"), 0);
 	des[0] = src.Mid(0, p1);
 
+	// agrv 1
 	p2 = src.Find(_T("\r\n"), p1 + 1);
 	des[1] = src.Mid(p1 + 2, p2 - (p1 + 2));
 
+	// agrv[2]
+	p3 = src.Find(_T("\r\n"), p2 + 1);
+	des[2] = src.Mid(p2 + 2, p3 - (p2 + 2));
 }
 
 char* CClientDlg::ConvertToChar(const CString &s)
@@ -212,6 +216,13 @@ void CClientDlg::OnBnClickedLogin()
 	// TODO: Add your control notification handler code here
 
 	UpdateData(TRUE);
+
+	if (IP == "")
+	{
+		MessageBox(_T("Vui long nhap IP may chu"));
+		return;
+	}
+
 	if (m_userName == "")
 	{
 		MessageBox(_T("Vui long nhap ten user"));
@@ -284,4 +295,10 @@ void CClientDlg::OnBnClickedSubtract()
 	// TODO: Add your control notification handler code here
 	Command = "2\r\n-\r\n";
 	mSend(Command);
+}
+
+
+void CClientDlg::OnBnClickedGiveup()
+{
+	// TODO: Add your control notification handler code here
 }

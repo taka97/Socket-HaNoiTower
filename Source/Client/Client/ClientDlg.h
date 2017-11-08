@@ -18,7 +18,6 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-
 	// Implementation
 protected:
 	HICON m_hIcon;
@@ -39,7 +38,7 @@ public:
 	sockaddr_in servAdd;
 	CString Command;
 	int	buffLength;
-	CString strResult[2];
+	CString strResult[3];
 	CString userOnline;
 	int level;
 	int isLogon;
@@ -48,7 +47,9 @@ public:
 	afx_msg void OnBnClickedLogin();
 	CString IP;
 	CString m_userName;
+	CString disk, toCol;
 	afx_msg void OnBnClickedLogout();
 	afx_msg void OnBnClickedAdd();
 	afx_msg void OnBnClickedSubtract();
+	afx_msg void OnBnClickedGiveup();
 };

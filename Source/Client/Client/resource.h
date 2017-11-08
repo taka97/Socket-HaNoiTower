@@ -5,20 +5,16 @@
 #define IDD_CLIENT_DIALOG               102
 #define IDP_SOCKETS_INIT_FAILED         103
 #define IDR_MAINFRAME                   128
-#define IDC_EDIT1                       1000
 #define IDC_IP                          1000
-#define IDC_EDIT2                       1001
 #define IDC_USER                        1001
 #define IDC_LOGIN                       1002
 #define IDC_LOGOUT                      1003
 #define IDC_ADD                         1004
 #define IDC_SUBTRACT                    1005
-#define IDC_EDIT3                       1006
 #define IDC_MSGBOX                      1006
 #define IDC_DISK                        1007
 #define IDC_TOCOL                       1008
 #define IDC_MOVE                        1009
-#define IDC_LOGIN3                      1010
 #define IDC_GIVEUP                      1010
 
 // Next default values for new objects

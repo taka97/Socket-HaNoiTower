@@ -5,6 +5,7 @@
 #include "afxwin.h"
 #include "stdlib.h"
 #include "time.h"
+#include "HaNoiTower.h"
 
 #define PORT 25000
 #define WM_SOCKET WM_USER+1
@@ -38,7 +39,6 @@ public:
 	void Split(CString src, CString des[3]);
 	void mSend(SOCKET sk, CString Command);
 	int mRecv(SOCKET sk, CString &Command);
-	int start_game();
 
 	struct SockName
 	{
@@ -58,7 +58,7 @@ public:
 	CString Command;
 	int R;
 
-	CHaNoiTower *tower;
+	CGame game;
 
 	CString m_msgString;
 	afx_msg void OnBnClickedListen();
