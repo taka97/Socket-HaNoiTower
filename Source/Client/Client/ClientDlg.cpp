@@ -283,7 +283,7 @@ void CClientDlg::OnBnClickedLogout()
 	INT_PTR i = MessageBox(_T("Ban muon logout?"), _T("Confirm"), MB_OKCANCEL);
 	if (i == IDCANCEL)
 		return;
-	Command = _T("3\r\n");
+	Command = _T("4\r\n");
 	mSend(Command);
 }
 
@@ -300,7 +300,6 @@ void CClientDlg::OnBnClickedSubtract()
 	Command = "2\r\n-\r\n";
 	mSend(Command);
 }
-
 
 void CClientDlg::OnBnClickedGiveup()
 {

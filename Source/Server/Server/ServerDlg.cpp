@@ -219,6 +219,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 		{
 		case 1://Login, check if 3 client is connected, start game
 		{
+			char* tem = ConvertToChar(strResult[1]);
 			int t = 0;
 			if (number_Socket > 0)
 			{
@@ -370,12 +371,12 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			m_msgString += pSock[post].Name;
 			m_msgString += " logout\r\n";
 			closesocket(wParam);
-			//for (int j = post; j < number_Socket; j++)
-			//{
-			//	pSock[post].sockClient = pSock[post + 1].sockClient;
-			//	strcpy(pSock[post].Name, pSock[post + 1].Name);
-			//}
-			//number_Socket--;
+			for (int j = post; j < number_Socket; j++)
+			{
+				pSock[post].sockClient = pSock[post + 1].sockClient;
+				strcpy(pSock[post].Name, pSock[post + 1].Name);
+			}
+			number_Socket--;
 			UpdateData(FALSE);
 			break;
 		}
