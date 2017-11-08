@@ -16,6 +16,8 @@ CClientDlg::CClientDlg(CWnd* pParent /*=NULL*/)
 	, m_msgString(_T(""))
 	, IP(_T(""))
 	, m_userName(_T(""))
+	, disk(_T(""))
+	, toCol(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -37,8 +39,6 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_LOGIN, &CClientDlg::OnBnClickedLogin)
 	ON_BN_CLICKED(IDC_LOGOUT, &CClientDlg::OnBnClickedLogout)
-	ON_BN_CLICKED(IDC_ADD, &CClientDlg::OnBnClickedAdd)
-	ON_BN_CLICKED(IDC_SUBTRACT, &CClientDlg::OnBnClickedSubtract)
 	ON_BN_CLICKED(IDC_GIVEUP, &CClientDlg::OnBnClickedGiveup)
 END_MESSAGE_MAP()
 
@@ -100,7 +100,7 @@ HCURSOR CClientDlg::OnQueryDragIcon()
 
 void CClientDlg::Split(CString src, CString des[2])
 {
-	int p1, p2, p3;
+	int p1, p2;
 
 	// type of command
 	p1 = src.Find(_T("\r\n"), 0);
@@ -111,8 +111,7 @@ void CClientDlg::Split(CString src, CString des[2])
 	des[1] = src.Mid(p1 + 2, p2 - (p1 + 2));
 
 	// agrv[2]
-	p3 = src.Find(_T("\r\n"), p2 + 1);
-	des[2] = src.Mid(p2 + 2, p3 - (p2 + 2));
+	des[2] = src.Right(src.GetLength() - p2);
 }
 
 char* CClientDlg::ConvertToChar(const CString &s)

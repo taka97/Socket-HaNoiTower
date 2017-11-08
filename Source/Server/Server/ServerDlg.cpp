@@ -4,12 +4,10 @@
 #include "stdafx.h"
 #include "Server.h"
 #include "ServerDlg.h"
-#include "HaNoiTower.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
 
 // CServerDlg dialog
 
@@ -96,7 +94,7 @@ HCURSOR CServerDlg::OnQueryDragIcon()
 
 void CServerDlg::Split(CString src, CString des[3])
 {
-	int p1, p2, p3;
+	int p1, p2;
 
 	// type of command
 	p1 = src.Find(_T("\r\n"), 0);
@@ -107,8 +105,7 @@ void CServerDlg::Split(CString src, CString des[3])
 	des[1] = src.Mid(p1 + 2, p2 - (p1 + 2));
 
 	// agrv[2]
-	p3 = src.Find(_T("\r\n"), p2 + 1);
-	des[2] = src.Mid(p2 + 2, p3 - (p2 + 2));
+	des[2] = src.Right(src.GetLength() - p2);
 }
 
 char* CServerDlg::ConvertToChar(const CString &s)
@@ -165,7 +162,7 @@ void CServerDlg::OnBnClickedListen()
 	pSock = new SockName[5];
 
 	srand((unsigned)time(NULL));
-	R = rand();
+	R = rand() % 10 + 1;
 }
 
 void CServerDlg::OnBnClickedCancel()
@@ -189,7 +186,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 		GetDlgItem(IDC_LISTEN)->EnableWindow(FALSE);
 		break;
 	}
-	case FD_READ:
+	case FD_READ:	// co lenh truyen du lieu cho cho server
 	{
 		int post = -1, dpos = -1;
 
@@ -228,20 +225,38 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 
 			if (t == 0 && number_Socket < 3)
 			{
+				// Client: "Dang nhap thanh cong"
+				// Server: "[Username] login"
 				strcpy(pSock[number_Socket].Name, tem);
 				Command = _T("1\r\n1\r\n");
 				m_msgString += strResult[1] + _T(" login\r\n");
 				UpdateData(FALSE);
-				number_Socket++;
+				number_Socket++;			
 			}
 			else
+				// Client: "Dang nhap that bai"
 				Command = _T("1\r\n0\r\n");
 			mSend(wParam, Command);
+
+			if (number_Socket < 3)
+			{
+				// send to client messenge "Waiting for the other player"
+				Command = _T("2\r\n");
+				Command += _T("1\r\n");
+			}
+			else
+			{	
+				// Client: "Game start"
+				// Server: "Game start"
+				game = CGame(number_Socket, R, RANDOM);
+				Command = _T("2\r\n");
+				Command += _T("2\r\n");
+				Command += CString(game.getStatus(number_Socket - 1).c_str());
+				m_msgString += _T("Game start");
+			}
+			mSend(wParam, Command);
+
 			UpdateData(FALSE);
-
-			startGame = true;
-			endGame = false;
-
 			break;
 		}
 
@@ -256,10 +271,8 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 						post = i;
 				}
 			}
-			if (strResult[1] == "+")
+			if (playflag == 1)
 			{
-
-				R += 1;
 				char pszNum[32] = { 0 };
 				CString strTest(_itoa(R, pszNum, 10));
 
@@ -294,7 +307,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			break;
 		}
 
-		case 3: //Logout
+		case 3:	//Moving Disk
 		{
 			int post = -1;
 			for (int i = 0; i < number_Socket; i++)
@@ -306,15 +319,45 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				}
 			}
 
-			m_msgString += pSock[post].Name;	//edit
-			m_msgString += " logout\r\n";		//edit
-			closesocket(wParam);				//edit
-			for (int j = post; j < number_Socket; j++)	//edit
+			bool isOK = game.move(post, playflag, tem);
+
+			if (isOK)
 			{
-				pSock[post].sockClient = pSock[post + 1].sockClient;
-				strcpy(pSock[post].Name, pSock[post + 1].Name);
+				Command = "3\r\n";
+				Command += "1\r\n";
+				Command += CString(game.getStatus(post).c_str());
 			}
-			number_Socket--;	//edit
+			else
+			{
+				Command = "3\r\n";
+				Command += "0\r\n";
+				Command += CString(game.getStatus(post).c_str());
+			}
+			mSend(wParam, Command);
+
+			break;
+		}
+		case 4: //Logout
+		{
+			int post = -1;
+			for (int i = 0; i < number_Socket; i++)
+			{
+				if (pSock[i].sockClient == wParam)
+				{
+					if (i < number_Socket)
+						post = i;
+				}
+			}
+
+			m_msgString += pSock[post].Name;
+			m_msgString += " logout\r\n";
+			closesocket(wParam);
+			//for (int j = post; j < number_Socket; j++)
+			//{
+			//	pSock[post].sockClient = pSock[post + 1].sockClient;
+			//	strcpy(pSock[post].Name, pSock[post + 1].Name);
+			//}
+			//number_Socket--;
 			UpdateData(FALSE);
 			break;
 		}
