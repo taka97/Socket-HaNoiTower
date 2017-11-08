@@ -178,12 +178,17 @@ CGame::CGame(size_t numOfPlayer, size_t numDisk, TYPE type)
 
 bool CGame::isReady()
 {
-	return m_numOfPlayer > 0 ? true : false;
+	return m_numOfPlayer == 3 ? true : false;
 }
 
 string CGame::getHistory(size_t player)
 {
 	return tower[player].getHistory();
+}
+
+string CGame::getStatus(size_t player)
+{
+	return tower[player].status();
 }
 
 bool CGame::move(size_t player, size_t disk, string toCol)

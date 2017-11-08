@@ -53,6 +53,7 @@ public:
 
 	bool isReady();
 	string getHistory(size_t player);
+	string getStatus(size_t player);
 	bool move(size_t player, size_t disk, string toCol);
 	bool isEndGame();
 	size_t getWinner();
