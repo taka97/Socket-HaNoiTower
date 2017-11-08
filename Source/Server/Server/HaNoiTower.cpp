@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "HaNoiTower.h"
 using namespace std;
 
@@ -220,4 +221,5 @@ size_t CGame::getWinner()
 			score = tower[player].getNumMoving();
 		}
 	}
+	return winner;
 }

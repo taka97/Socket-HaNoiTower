@@ -43,17 +43,21 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\Client.ico">
+    <Image Include="res\Client.ico">
       <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\Client.rc2">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="ReadMe.txt" />
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Client.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
   </ItemGroup>
 </Project>

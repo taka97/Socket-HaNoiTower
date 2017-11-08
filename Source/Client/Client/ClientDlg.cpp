@@ -168,6 +168,8 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 		Split(temp, strResult);
 		int flag1 = _ttoi(strResult[0]);
 		int flag2 = _ttoi(strResult[1]);
+		char *tmp = ConvertToChar(strResult[2]);
+
 		switch (flag1)
 		{
 		case 1:
@@ -181,16 +183,19 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			else
 				m_msgString += _T("Dang nhap that bai\r\n");
 
-
 			UpdateData(FALSE);
 			break;
 		}
 
 		case 2:
 		{
-			m_msgString += "Server: R = ";
-			m_msgString += strResult[1];
-			m_msgString += "\r\n";
+			if (flag2 == 1)
+				m_msgString += "Dang cho nguoi choi khac\r\n";
+			else
+			{
+				m_msgString += "Game start\r\n";
+				m_msgString += CString(tmp);
+			}
 			UpdateData(FALSE);
 			break;
 		}

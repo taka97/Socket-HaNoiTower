@@ -54,7 +54,7 @@ public:
 	int number_Socket;
 	int first_send;
 	SockName *pSock;
-	CString strResult[3];
+	CString strResult[5];
 	CString Command;
 	int R;
 
