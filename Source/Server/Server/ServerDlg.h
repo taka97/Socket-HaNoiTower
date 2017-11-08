@@ -15,7 +15,7 @@ class CServerDlg : public CDialog
 	// Construction
 public:
 	CServerDlg(CWnd* pParent = NULL);	// standard constructor
-
+	~CServerDlg();
 	// Dialog Data
 	enum { IDD = IDD_SERVER_DIALOG };
 
@@ -35,9 +35,10 @@ protected:
 public:
 	LRESULT SockMsg(WPARAM wParam, LPARAM lParam);
 	char* ConvertToChar(const CString &s);
-	void Split(CString src,CString des[3]);
+	void Split(CString src, CString des[3]);
 	void mSend(SOCKET sk, CString Command);
 	int mRecv(SOCKET sk, CString &Command);
+	int start_game();
 
 	struct SockName
 	{
@@ -46,10 +47,10 @@ public:
 		char Name[200];
 	};
 
-	SOCKET sockServer,sockClient,flag,sclient;
+	SOCKET sockServer, sockClient, flag, sclient;
 	struct sockaddr_in serverAdd;
 	int msgType;
-	int buffLength,t,lenguser,flagsend,kq, count_sock;
+	int buffLength, t, lenguser, flagsend, kq, count_sock;
 	int number_Socket;
 	int first_send;
 	SockName *pSock;
@@ -57,6 +58,7 @@ public:
 	CString Command;
 	int R;
 
+	CHaNoiTower *tower;
 
 	CString m_msgString;
 	afx_msg void OnBnClickedListen();

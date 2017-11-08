@@ -16,13 +16,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -72,6 +70,7 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\Server.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
@@ -83,8 +82,8 @@ EXSTYLE WS_EX_APPWINDOW
 CAPTION "Server"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    PUSHBUTTON      "Listen",IDC_LISTEN,18,186,50,14
-    PUSHBUTTON      "Cancel",IDC_CANCEL,82,186,50,14
+    PUSHBUTTON      "Listen",IDC_LISTEN,38,186,31,14
+    PUSHBUTTON      "Cancel",IDC_CANCEL,83,186,31,14
     EDITTEXT        IDC_BOXCHAT,7,7,138,166,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL
 END
 
@@ -134,7 +133,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_SERVER_DIALOG, DIALOG
     BEGIN
@@ -149,15 +148,26 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_SERVER_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDP_SOCKETS_INIT_FAILED "Windows sockets initialization failed."
 END
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

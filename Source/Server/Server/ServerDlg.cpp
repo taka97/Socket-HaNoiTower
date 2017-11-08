@@ -20,6 +20,12 @@ CServerDlg::CServerDlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
+CServerDlg::~CServerDlg()
+{
+	if (pSock)
+		delete[]pSock;
+}
+
 void CServerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -92,12 +98,15 @@ void CServerDlg::Split(CString src, CString des[3])
 {
 	int p1, p2, p3;
 
+	// type of command
 	p1 = src.Find(_T("\r\n"), 0);
 	des[0] = src.Mid(0, p1);
 
+	// agrv 1
 	p2 = src.Find(_T("\r\n"), p1 + 1);
 	des[1] = src.Mid(p1 + 2, p2 - (p1 + 2));
 
+	// agrv[2]
 	p3 = src.Find(_T("\r\n"), p2 + 1);
 	des[2] = src.Mid(p2 + 2, p3 - (p2 + 2));
 }
@@ -153,7 +162,7 @@ void CServerDlg::OnBnClickedListen()
 		MessageBox((LPCTSTR)"Cant call WSAAsyncSelect");
 	GetDlgItem(IDC_LISTEN)->EnableWindow(FALSE);
 	number_Socket = 0;
-	pSock = new SockName[200];
+	pSock = new SockName[5];
 
 	srand((unsigned)time(NULL));
 	R = rand();
@@ -198,10 +207,11 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			break;
 		Split(temp, strResult);
 		int flag = _ttoi(strResult[0]);
-		char* tem = ConvertToChar(strResult[1]);
+		int disk = _ttoi(strResult[1]);
+		char* tem = ConvertToChar(strResult[2]);
 		switch (flag)
 		{
-		case 1://Login
+		case 1://Login, check if 3 client is connected, start game
 		{
 			int t = 0;
 			if (number_Socket > 0)
@@ -216,7 +226,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				}
 			}
 
-			if (t == 0)
+			if (t == 0 && number_Socket < 3)
 			{
 				strcpy(pSock[number_Socket].Name, tem);
 				Command = _T("1\r\n1\r\n");
@@ -228,10 +238,11 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				Command = _T("1\r\n0\r\n");
 			mSend(wParam, Command);
 			UpdateData(FALSE);
+
 			break;
 		}
 
-		case 2:
+		case 2:	//Process
 		{
 			int post = -1;
 			for (int i = 0; i < number_Socket; i++)
@@ -280,7 +291,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			break;
 		}
 
-		case 3:
+		case 3: //Logout -> End game
 		{
 			int post = -1;
 			for (int i = 0; i < number_Socket; i++)
@@ -293,15 +304,15 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			}
 
 
-			m_msgString += pSock[post].Name;
-			m_msgString += " logout\r\n";
-			closesocket(wParam);
-			for (int j = post; j < number_Socket; j++)
+			m_msgString += pSock[post].Name;	//edit
+			m_msgString += " logout\r\n";		//edit
+			closesocket(wParam);				//edit
+			for (int j = post; j < number_Socket; j++)	//edit
 			{
 				pSock[post].sockClient = pSock[post + 1].sockClient;
 				strcpy(pSock[post].Name, pSock[post + 1].Name);
 			}
-			number_Socket--;
+			number_Socket--;	//edit
 			UpdateData(FALSE);
 			break;
 		}
