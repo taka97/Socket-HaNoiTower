@@ -106,15 +106,15 @@ void CServerDlg::Split(CString src, CString des[3])
 
 	// agrv[2]
 	p3 = src.Find(_T("\r\n"), p2 + 1);
-	des[1] = src.Mid(p2 + 2, p3 - (p2 + 2));
+	des[2] = src.Mid(p2 + 2, p3 - (p2 + 2));
 
 	// agrv[3]
 	p4 = src.Find(_T("\r\n"), p3 + 1);
-	des[1] = src.Mid(p3 + 2, p4 - (p3 + 2));
+	des[3] = src.Mid(p3 + 2, p4 - (p3 + 2));
 
 	// agrv[4]
 	p5 = src.Find(_T("\r\n"), p4 + 1);
-	des[1] = src.Mid(p4 + 2, p5 - (p4 + 2));
+	des[4] = src.Mid(p4 + 2, p5 - (p4 + 2));
 }
 
 char* CServerDlg::ConvertToChar(const CString &s)
@@ -249,6 +249,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 					// send to client messenge "Waiting for the other player"
 					Command = _T("2\r\n");
 					Command += _T("1\r\n");
+					mSend(wParam, Command);
 				}
 				else
 				{
@@ -258,10 +259,11 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 					Command = _T("2\r\n");
 					Command += _T("2\r\n");
 					Command += CString(game.getStatus(number_Socket - 1).c_str());
-					m_msgString += _T("Game start");
+					m_msgString += _T("Game start\r\n");
+					for (size_t i = 0; i < number_Socket; i++)
+						mSend(pSock[i].sockClient, Command);
 				}
-				mSend(wParam, Command);
-
+				
 				UpdateData(FALSE);
 			}
 			else
@@ -270,11 +272,6 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				Command = _T("1\r\n0\r\n");
 				mSend(wParam, Command);
 			}
-
-
-
-			
-
 			UpdateData(FALSE);
 			break;
 		}

@@ -41,7 +41,7 @@ protected:
 private:
 	string History;	// store history move disk
 	size_t numDisk = 0;
-	vector<int> col[3];
+	vector<size_t> col[3];
 	size_t num[3];
 	size_t numMoving = 0;
 };

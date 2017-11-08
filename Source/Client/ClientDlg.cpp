@@ -98,9 +98,9 @@ HCURSOR CClientDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CClientDlg::Split(CString src, CString des[2])
+void CClientDlg::Split(CString src, CString des[5])
 {
-	int p1, p2;
+	int p1, p2, p3, p4, p5;
 
 	// type of command
 	p1 = src.Find(_T("\r\n"), 0);
@@ -111,7 +111,16 @@ void CClientDlg::Split(CString src, CString des[2])
 	des[1] = src.Mid(p1 + 2, p2 - (p1 + 2));
 
 	// agrv[2]
-	des[2] = src.Right(src.GetLength() - p2);
+	p3 = src.Find(_T("\r\n"), p2 + 1);
+	des[2] = src.Mid(p2 + 2, p3 - (p2 + 2));
+
+	// agrv[3]
+	p4 = src.Find(_T("\r\n"), p3 + 1);
+	des[3] = src.Mid(p3 + 2, p4 - (p3 + 2));
+
+	// agrv[4]
+	p5 = src.Find(_T("\r\n"), p4 + 1);
+	des[4] = src.Mid(p4 + 2, p5 - (p4 + 2));
 }
 
 char* CClientDlg::ConvertToChar(const CString &s)
@@ -168,7 +177,7 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 		Split(temp, strResult);
 		int flag1 = _ttoi(strResult[0]);
 		int flag2 = _ttoi(strResult[1]);
-		char *tmp = ConvertToChar(strResult[2]);
+		char *tmp = NULL;
 
 		switch (flag1)
 		{
@@ -194,7 +203,9 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			else
 			{
 				m_msgString += "Game start\r\n";
-				m_msgString += CString(tmp);
+				m_msgString += strResult[2] + _T("\r\n");
+				m_msgString += strResult[3] + _T("\r\n");
+				m_msgString += strResult[4] + _T("\r\n");
 			}
 			UpdateData(FALSE);
 			break;

@@ -38,7 +38,7 @@ public:
 	sockaddr_in servAdd;
 	CString Command;
 	int	buffLength;
-	CString strResult[3];
+	CString strResult[5];
 	CString userOnline;
 	int level;
 	int isLogon;

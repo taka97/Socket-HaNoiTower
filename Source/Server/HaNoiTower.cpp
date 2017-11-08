@@ -12,7 +12,7 @@ CHaNoiTower::CHaNoiTower()
 
 CHaNoiTower::CHaNoiTower(size_t numDisk, TYPE type)
 {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	switch (type)
 	{
 	case NORMAL:
@@ -22,8 +22,6 @@ CHaNoiTower::CHaNoiTower(size_t numDisk, TYPE type)
 		break;
 	case RANDOM:
 		init(numDisk);
-
-		size_t i;
 		size_t R;
 
 		for (size_t i = 0; i < numDisk; i++)
@@ -91,17 +89,17 @@ string CHaNoiTower::status()
 	ss << "A: ";
 	for (i = 0; i < num[0]; i++)
 		ss << col[0][i] << " ";
-	ss << endl;
+	ss << "\r\n";
 
 	ss << "B: ";
 	for (i = 0; i < num[1]; i++)
 		ss << col[1][i] << " ";
-	ss << endl;
+	ss << "\r\n";
 
 	ss << "C: ";
 	for (i = 0; i < num[2]; i++)
 		ss << col[2][i] << " ";
-	ss << endl;
+	ss << "\r\n";
 
 	return ss.str();
 }
