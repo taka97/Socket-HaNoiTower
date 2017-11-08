@@ -176,6 +176,11 @@ CGame::CGame(size_t numOfPlayer, size_t numDisk, TYPE type)
 		tower[i] = tmp;
 }
 
+bool CGame::isReady()
+{
+	return m_numOfPlayer > 0 ? true : false;
+}
+
 string CGame::getHistory(size_t player)
 {
 	return tower[player].getHistory();

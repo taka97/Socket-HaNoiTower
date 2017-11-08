@@ -51,6 +51,7 @@ public:
 	CGame();
 	CGame(size_t numOfPlayer, size_t numDisk, TYPE type = NORMAL);
 
+	bool isReady();
 	string getHistory(size_t player);
 	bool move(size_t player, size_t disk, string toCol);
 	bool isEndGame();
