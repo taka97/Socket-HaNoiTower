@@ -178,7 +178,7 @@ CGame::CGame(size_t numOfPlayer, size_t numDisk, TYPE type)
 
 bool CGame::isReady()
 {
-	return m_numOfPlayer == 3 ? true : false;
+	return m_numOfPlayer > 0 ? true : false;
 }
 
 string CGame::getHistory(size_t player)
