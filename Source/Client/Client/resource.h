@@ -15,6 +15,11 @@
 #define IDC_SUBTRACT                    1005
 #define IDC_EDIT3                       1006
 #define IDC_MSGBOX                      1006
+#define IDC_DISK                        1007
+#define IDC_TOCOL                       1008
+#define IDC_MOVE                        1009
+#define IDC_LOGIN3                      1010
+#define IDC_GIVEUP                      1010
 
 // Next default values for new objects
 // 
