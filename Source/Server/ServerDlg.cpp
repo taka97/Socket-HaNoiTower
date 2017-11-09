@@ -256,6 +256,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 					// Client: "Game start"
 					// Server: "Game start"
 					game = CGame(number_Socket, R, RANDOM);
+					game.startGame();
 					Command = _T("2\r\n");
 					Command += _T("2\r\n");
 					Command += CString(game.getStatus(number_Socket - 1).c_str());
@@ -287,36 +288,55 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 						post = i;
 				}
 			}
-			if (playflag == 1)
+			switch (playflag)
 			{
-				char pszNum[32] = { 0 };
-				CString strTest(_itoa(R, pszNum, 10));
+			//case 1:	
+			//{
+			//	char pszNum[32] = { 0 };
+			//	CString strTest(_itoa(R, pszNum, 10));
 
-				m_msgString += pSock[post].Name;
-				m_msgString += " vua gui lenh +, R = ";
-				m_msgString += strTest;
-				m_msgString += "\r\n";
+			//	m_msgString += pSock[post].Name;
+			//	m_msgString += " vua gui lenh +, R = ";
+			//	m_msgString += strTest;
+			//	m_msgString += "\r\n";
 
-				Command = "2\r\n";
-				Command += strTest;
-				Command += "\r\n";
-			}
-			else
+			//	Command = "2\r\n";
+			//	Command += strTest;
+			//	Command += "\r\n";
+			//	break;
+			//}
+			//case 2:
+			//{
+			//	R -= 1;
+			//	char pszNum[32] = { 0 };
+			//	CString strTest(_itoa(R, pszNum, 10));
+
+			//	m_msgString += pSock[post].Name;
+			//	m_msgString += " vua gui lenh -, R = ";
+			//	m_msgString += strTest;
+			//	m_msgString += "\r\n";
+
+			//	Command = "2\r\n";
+			//	Command += strTest;
+			//	Command += "\r\n";
+			//	break;
+			//}
+			case 3:
 			{
-				R -= 1;
-				char pszNum[32] = { 0 };
-				CString strTest(_itoa(R, pszNum, 10));
-
-				m_msgString += pSock[post].Name;
-				m_msgString += " vua gui lenh -, R = ";
-				m_msgString += strTest;
-				m_msgString += "\r\n";
-
-				Command = "2\r\n";
-				Command += strTest;
-				Command += "\r\n";
+				if (number_Socket < 1)//< 3)
+					Command = "3\r\n0\r\n";
+				else
+				{
+					Command = "3\r\n1\r\n";
+					game.giveup(post);
+				}
+				mSend(wParam, Command);
+				break;
 			}
-
+			default:
+				break;
+			}
+		
 			mSend(wParam, Command);
 			UpdateData(FALSE);
 
@@ -337,7 +357,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 
 			bool isOK = game.move(post, playflag, tem);
 
-			if (isOK)
+			if (isOK && !game.isGiveup(post))
 			{
 				Command = "3\r\n";
 				Command += "1\r\n";
@@ -347,7 +367,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			{
 				Command = "3\r\n";
 				Command += "0\r\n";
-				Command += CString(game.getStatus(post).c_str());
+				//Command += CString(game.getStatus(post).c_str());
 			}
 			mSend(wParam, Command);
 
