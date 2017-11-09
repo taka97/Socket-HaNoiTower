@@ -62,6 +62,7 @@ public:
 	bool move(size_t player, size_t disk, string toCol);
 	bool isEndGame();
 	size_t getWinner();
+	size_t getScore(size_t player);
 	size_t getNumberDisk();
 private:
 	vector<CHaNoiTower> tower;

@@ -182,13 +182,20 @@ CGame::CGame(size_t numOfPlayer, size_t numDisk, TYPE type)
 
 bool CGame::startGame()
 {
+	if (tower[0].isSolve())
+	{
+		for (size_t i = 0; i < m_numOfPlayer; i++)
+			status[i] = SOLVED;
+		return true;
+	}
+
 	if (isReady())
 	{
 		for (size_t i = 0; i < m_numOfPlayer; i++)
 			status[i] = PLAYING;
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -237,9 +244,9 @@ bool CGame::move(size_t player, size_t disk, string toCol)
 bool CGame::isEndGame()
 {
 	for (size_t player = 0; player < m_numOfPlayer; player++)
-		if (status[player] == PLAYING)
-			return false;
-	return true;
+		if (status[player] == SOLVED)
+			return true;
+	return false;
 }
 
 size_t CGame::getWinner()
@@ -256,4 +263,9 @@ size_t CGame::getWinner()
 		}
 	}
 	return winner;
+}
+
+size_t CGame::getScore(size_t player)
+{
+	return tower[player].getNumMoving();
 }
