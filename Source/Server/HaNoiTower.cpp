@@ -201,6 +201,11 @@ bool CGame::giveup(size_t player)
 	return true;
 }
 
+bool CGame::isGiveup(size_t player)
+{
+	return status[player] == GIVEUP;
+}
+
 string CGame::getHistory(size_t player)
 {
 	return tower[player].getHistory();
