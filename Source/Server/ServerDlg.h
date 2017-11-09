@@ -63,4 +63,7 @@ public:
 	CString m_msgString;
 	afx_msg void OnBnClickedListen();
 	afx_msg void OnBnClickedCancel();
+
+	string notificationEndGame();
+	bool endGame();
 };

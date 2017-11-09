@@ -264,6 +264,10 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 					m_msgString += _T("Game start\r\n");
 					for (size_t i = 0; i < number_Socket; i++)
 						mSend(pSock[i].sockClient, Command);
+
+					if (game.isEndGame())
+						endGame();
+
 				}
 				
 				UpdateData(FALSE);
@@ -304,8 +308,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 					Command = "2\r\n3\r\n1\r\n";
 				}
 				break;
-			case 4:	// Result
-				break;
+			//case 4:	// Result	
 			default:
 				break;
 			}
@@ -342,6 +345,9 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				//Command += CString(game.getStatus(post).c_str());
 			}
 			mSend(wParam, Command);
+
+			if (game.isEndGame())
+				endGame();
 
 			break;
 		}
@@ -398,7 +404,35 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 		UpdateData(FALSE);
 		break;
 	}
-
 	}
 	return 0;
+}
+
+string CServerDlg::notificationEndGame()
+{
+	vector<pair<string, size_t>>tableScore(number_Socket);
+	for (size_t i = 0; i < number_Socket; i++)
+		tableScore[i] = make_pair(pSock[i].Name, game.getScore(i));
+
+	for (size_t i = 0; i < number_Socket - 1; i++)
+		for (size_t j = 0; j < number_Socket; j++)
+			if (get<1>(tableScore[j]) < get<1>(tableScore[i]))
+				tableScore[i].swap(tableScore[j]);
+
+	stringstream ss;
+	for (size_t i = 0; i < number_Socket; i++)
+		ss << get<0>(tableScore[i]) << "\t" << get<1>(tableScore[i]) << "\r\n";
+
+	return ss.str();
+}
+
+bool CServerDlg::endGame()
+{
+	Command = "2\r\n4\r\n";
+	Command += notificationEndGame().c_str();
+	for (size_t i = 0; i < number_Socket; i++)
+	{
+		mSend(pSock[i].sockClient, Command);
+		closesocket(pSock[i].sockClient);
+	}
 }
