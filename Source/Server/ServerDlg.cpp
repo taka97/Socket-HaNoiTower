@@ -233,7 +233,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				}
 			}
 
-			if (t == 0 && number_Socket < 3)
+			if (t == 0 && number_Socket < 1)//< 3)
 			{
 				// Client: "Dang nhap thanh cong"
 				// Server: "[Username] login"
@@ -244,7 +244,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				number_Socket++;
 
 				// check if number_client == 3 ? startGame : wait for
-				if (number_Socket < 3)
+				if (number_Socket < 1)//3)
 				{
 					// send to client messenge "Waiting for the other player"
 					Command = _T("2\r\n");

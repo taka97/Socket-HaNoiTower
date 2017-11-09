@@ -44,12 +44,13 @@ public:
 	int isLogon;
 
 	CString m_msgString;
-	afx_msg void OnBnClickedLogin();
 	CString IP;
 	CString m_userName;
 	CString disk, toCol;
+	afx_msg void OnBnClickedLogin();
 	afx_msg void OnBnClickedLogout();
-	afx_msg void OnBnClickedAdd();
-	afx_msg void OnBnClickedSubtract();
 	afx_msg void OnBnClickedGiveup();
+	afx_msg void OnBnClickedMove();
+
+	bool checkCol(CString &toCol);
 };

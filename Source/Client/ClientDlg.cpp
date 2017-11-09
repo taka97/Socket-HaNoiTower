@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "ClientDlg.h"
+#include <string>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -40,6 +41,7 @@ BEGIN_MESSAGE_MAP(CClientDlg, CDialog)
 	ON_BN_CLICKED(IDC_LOGIN, &CClientDlg::OnBnClickedLogin)
 	ON_BN_CLICKED(IDC_LOGOUT, &CClientDlg::OnBnClickedLogout)
 	ON_BN_CLICKED(IDC_GIVEUP, &CClientDlg::OnBnClickedGiveup)
+	ON_BN_CLICKED(IDC_MOVE, &CClientDlg::OnBnClickedMove)
 END_MESSAGE_MAP()
 
 
@@ -58,6 +60,8 @@ BOOL CClientDlg::OnInitDialog()
 
 	IP = "127.0.0.1";
 	GetDlgItem(IDC_LOGOUT)->EnableWindow(FALSE);
+	//GetDlgItem(IDC_GIVEUP)->EnableWindow(FALSE);
+	//GetDlgItem(IDC_MOVE)->EnableWindow(FALSE);
 	UpdateData(FALSE);
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -210,6 +214,11 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			UpdateData(FALSE);
 			break;
 		}
+		case 3:
+		{
+
+			break;
+		}
 		}
 		break;
 	}
@@ -226,6 +235,7 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 	}
 	return 0;
 }
+
 void CClientDlg::OnBnClickedLogin()
 {
 	// TODO: Add your control notification handler code here
@@ -298,21 +308,52 @@ void CClientDlg::OnBnClickedLogout()
 	mSend(Command);
 }
 
-void CClientDlg::OnBnClickedAdd()
-{
-	// TODO: Add your control notification handler code here
-	Command = "2\r\n+\r\n";
-	mSend(Command);
-}
-
-void CClientDlg::OnBnClickedSubtract()
-{
-	// TODO: Add your control notification handler code here
-	Command = "2\r\n-\r\n";
-	mSend(Command);
-}
-
 void CClientDlg::OnBnClickedGiveup()
 {
 	// TODO: Add your control notification handler code here
+}
+
+
+void CClientDlg::OnBnClickedMove()
+{
+	// TODO: Add your control notification handler code here
+	if (disk == "")
+	{
+		MessageBox(_T("Vui long nhap so dia"));
+		return;
+	}
+
+	if (toCol == "")
+	{
+		MessageBox(_T("Vui long nhap vi tri cot ban muon chuyen den"));
+		return;
+	}
+
+	if (!checkCol(toCol))
+	{
+		MessageBox(_T("Vi tri cot khong hop le!!!\r\nVi tri cot chi co the la A B C"));
+		return;
+	}
+
+	Command = "3\r\n";
+	Command += disk;
+	Command += "\r\n";
+	Command += toCol;
+	Command += "\r\n";
+	mSend(Command);
+}
+
+bool CClientDlg::checkCol(CString &toCol)
+{
+	std::string str(ConvertToChar(toCol));
+	if (str == "A" || str == "B" || str == "C")
+		return true;
+	if (str == "a" || str == "b" || str == "c")
+	{
+		str[0] -= 'A';
+		toCol = str.c_str();
+		return true;
+	}
+	
+	return false;
 }

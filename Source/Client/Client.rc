@@ -76,27 +76,27 @@ IDR_MAINFRAME           ICON                    "res\\Client.ico"
 // Dialog
 //
 
-IDD_CLIENT_DIALOG DIALOGEX 0, 0, 319, 197
+IDD_CLIENT_DIALOG DIALOGEX 0, 0, 313, 197
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "Client"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    GROUPBOX        "Connect",IDC_STATIC,200,7,102,72
-    EDITTEXT        IDC_IP,231,17,66,14,ES_AUTOHSCROLL
-    LTEXT           "IP:",IDC_STATIC,220,20,10,8
-    LTEXT           "User:",IDC_STATIC,212,42,18,8
-    PUSHBUTTON      "Login",IDC_LOGIN,207,58,35,14
-    PUSHBUTTON      "Logout",IDC_LOGOUT,253,58,40,14
-    GROUPBOX        "Command",IDC_STATIC,199,86,103,100
-    EDITTEXT        IDC_MSGBOX,13,7,180,178,ES_MULTILINE | ES_READONLY | WS_VSCROLL
-    EDITTEXT        IDC_USER,231,38,66,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_DISK,231,96,66,14,ES_AUTOHSCROLL
-    LTEXT           "Disk:",IDC_STATIC,214,99,16,8
-    EDITTEXT        IDC_TOCOL,231,113,66,14,ES_AUTOHSCROLL
-    LTEXT           "To Col:",IDC_STATIC,206,116,24,8
-    PUSHBUTTON      "Move",IDC_MOVE,235,132,35,14
-    PUSHBUTTON      "GIVE UP",IDC_GIVEUP,227,153,53,27,BS_CENTER
+    EDITTEXT        IDC_IP,219,17,66,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_USER,219,38,66,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Login",IDC_LOGIN,203,58,35,14
+    PUSHBUTTON      "Logout",IDC_LOGOUT,249,58,40,14
+    EDITTEXT        IDC_DISK,219,96,33,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOCOL,219,113,33,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Move",IDC_MOVE,259,96,35,34
+    PUSHBUTTON      "GIVE UP",IDC_GIVEUP,220,144,53,27,BS_CENTER
+    EDITTEXT        IDC_MSGBOX,13,7,160,178,ES_MULTILINE | ES_READONLY | WS_VSCROLL
+    GROUPBOX        "Connect",IDC_STATIC,188,7,117,72
+    GROUPBOX        "Command",IDC_STATIC,188,86,117,100
+    LTEXT           "User:",IDC_STATIC,197,42,18,8
+    LTEXT           "IP:",IDC_STATIC,205,20,10,8
+    LTEXT           "Disk:",IDC_STATIC,202,99,16,8
+    LTEXT           "To Col:",IDC_STATIC,194,116,24,8
 END
 
 
@@ -122,13 +122,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "TODO: <Company name>"
-            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "CompanyName", "Taka Company"
+            VALUE "FileDescription", "Ha Noi Tower Client"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "Client.exe"
-            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "LegalCopyright", "Taka Company.  All rights reserved."
             VALUE "OriginalFilename", "Client.exe"
-            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductName", "Ha Noi Tower"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
@@ -150,7 +150,7 @@ BEGIN
     IDD_CLIENT_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 312
+        RIGHTMARGIN, 305
         TOPMARGIN, 7
         BOTTOMMARGIN, 190
     END
