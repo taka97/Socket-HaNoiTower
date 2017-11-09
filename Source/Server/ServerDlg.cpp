@@ -171,7 +171,8 @@ void CServerDlg::OnBnClickedListen()
 	pSock = new SockName[5];
 
 	srand((unsigned)time(NULL));
-	R = rand() % 10 + 1;
+	//R = rand() % 8 + 3;
+	R = 3;
 }
 
 void CServerDlg::OnBnClickedCancel()
@@ -292,22 +293,22 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			{
 			//case 1:	// Waiting for the other player
 			//case 2:	// Start game
-			case 3:
-			{
+			case 3:		// Give up
 				if (number_Socket < 1)//< 3)
-					Command = "3\r\n0\r\n";
+					Command = "2\r\n3\r\n0\r\n";
 				else
 				{
-					Command = "3\r\n1\r\n";
+					m_msgString += pSock[post].Name;
+					m_msgString += " give up\r\n";
 					game.giveup(post);
+					Command = "2\r\n3\r\n1\r\n";
 				}
-				mSend(wParam, Command);
 				break;
-			}
+			case 4:	// Result
+				break;
 			default:
 				break;
 			}
-		
 			mSend(wParam, Command);
 			UpdateData(FALSE);
 

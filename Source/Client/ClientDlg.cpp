@@ -181,6 +181,7 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 		Split(temp, strResult);
 		int flag1 = _ttoi(strResult[0]);
 		int flag2 = _ttoi(strResult[1]);
+		int flag3 = _ttoi(strResult[2]);
 		char *tmp = NULL;
 
 		switch (flag1)
@@ -202,15 +203,25 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 
 		case 2:
 		{
-			if (flag2 == 1)
-				m_msgString += "Dang cho nguoi choi khac\r\n";
-			else // flag2 == 2
+			switch (flag2)
 			{
+			case 1:
+				m_msgString += "Dang cho nguoi choi khac\r\n";
+				break;
+			case 2:
 				m_msgString = "---- HA NOI TOWER GAME ----\r\n";
 				m_msgString += strResult[2] + _T("\r\n");
 				m_msgString += strResult[3] + _T("\r\n");
 				m_msgString += strResult[4] + _T("\r\n");
+				break;
+			case 3:
+				if (flag3 == 1)
+					m_msgString += "Ban da bo cuoc\r\n";
+				else
+					m_msgString += "Ban khong the bo cuoc\r\n";
+				break;
 			}
+
 			UpdateData(FALSE);
 			break;
 		}
@@ -352,6 +363,11 @@ void CClientDlg::OnBnClickedMove()
 	Command += toCol;
 	Command += "\r\n";
 	mSend(Command);
+
+	disk = "";
+	toCol = "";
+	GotoDlgCtrl(GetDlgItem(IDC_DISK));
+	UpdateData(FALSE);
 }
 
 bool CClientDlg::checkCol(CString &toCol)
