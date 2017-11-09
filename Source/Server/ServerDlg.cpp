@@ -290,37 +290,8 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			}
 			switch (playflag)
 			{
-			//case 1:	
-			//{
-			//	char pszNum[32] = { 0 };
-			//	CString strTest(_itoa(R, pszNum, 10));
-
-			//	m_msgString += pSock[post].Name;
-			//	m_msgString += " vua gui lenh +, R = ";
-			//	m_msgString += strTest;
-			//	m_msgString += "\r\n";
-
-			//	Command = "2\r\n";
-			//	Command += strTest;
-			//	Command += "\r\n";
-			//	break;
-			//}
-			//case 2:
-			//{
-			//	R -= 1;
-			//	char pszNum[32] = { 0 };
-			//	CString strTest(_itoa(R, pszNum, 10));
-
-			//	m_msgString += pSock[post].Name;
-			//	m_msgString += " vua gui lenh -, R = ";
-			//	m_msgString += strTest;
-			//	m_msgString += "\r\n";
-
-			//	Command = "2\r\n";
-			//	Command += strTest;
-			//	Command += "\r\n";
-			//	break;
-			//}
+			//case 1:	// Waiting for the other player
+			//case 2:	// Start game
 			case 3:
 			{
 				if (number_Socket < 1)//< 3)

@@ -206,7 +206,7 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				m_msgString += "Dang cho nguoi choi khac\r\n";
 			else // flag2 == 2
 			{
-				m_msgString = "Game start\r\n";
+				m_msgString = "---- HA NOI TOWER GAME ----\r\n";
 				m_msgString += strResult[2] + _T("\r\n");
 				m_msgString += strResult[3] + _T("\r\n");
 				m_msgString += strResult[4] + _T("\r\n");
@@ -220,10 +220,12 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				m_msgString += "Di chuyen that bai\r\n";
 			else // flag2 == 1
 			{
-				m_msgString = strResult[2] + _T("\r\n");
+				m_msgString = "---- HA NOI TOWER GAME ----\r\n";
+				m_msgString += strResult[2] + _T("\r\n");
 				m_msgString += strResult[3] + _T("\r\n");
 				m_msgString += strResult[4] + _T("\r\n");
 			}
+			UpdateData(FALSE);
 			break;
 		}
 		}
@@ -238,7 +240,6 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 		UpdateData(FALSE);
 		break;
 	}
-
 	}
 	return 0;
 }
