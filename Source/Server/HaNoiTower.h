@@ -52,7 +52,9 @@ public:
 	CGame();
 	CGame(size_t numOfPlayer, size_t numDisk, TYPE type = NORMAL);
 
+	bool startGame();
 	bool isReady();
+	bool giveup(size_t player);
 	string getHistory(size_t player);
 	string getStatus(size_t player);
 	bool move(size_t player, size_t disk, string toCol);
@@ -60,6 +62,6 @@ public:
 	size_t getWinner();
 private:
 	vector<CHaNoiTower> tower;
-	vector<int>status;
+	vector<size_t>status;
 	size_t m_numOfPlayer;
 };

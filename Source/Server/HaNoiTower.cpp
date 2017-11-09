@@ -175,9 +175,30 @@ CGame::CGame(size_t numOfPlayer, size_t numDisk, TYPE type)
 		tower[i] = tmp;
 }
 
+bool CGame::startGame()
+{
+	if (isReady())
+	{
+		for (size_t i = 0; i < m_numOfPlayer; i++)
+			status[i] = PLAYING;
+		return true;
+	}
+	
+	return false;
+}
+
 bool CGame::isReady()
 {
 	return m_numOfPlayer > 0 ? true : false;
+}
+
+bool CGame::giveup(size_t player)
+{
+	if (player >= m_numOfPlayer)
+		return false;
+
+	status[player] = GIVEUP;
+	return true;
 }
 
 string CGame::getHistory(size_t player)
