@@ -31,6 +31,7 @@ public:
 	bool move(size_t disk, string toCol);
 	bool isSolve();
 	string status();
+	size_t getNumOfDisk();
 
 protected:
 	void move(size_t toCol, size_t fromCol);
@@ -61,6 +62,7 @@ public:
 	bool move(size_t player, size_t disk, string toCol);
 	bool isEndGame();
 	size_t getWinner();
+	size_t getNumberDisk();
 private:
 	vector<CHaNoiTower> tower;
 	vector<size_t>status;

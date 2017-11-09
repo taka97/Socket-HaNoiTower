@@ -49,7 +49,7 @@ size_t CHaNoiTower::getNumMoving()
 
 bool CHaNoiTower::move(size_t disk, string toCol)
 {
-	if (disk > numDisk)
+	if (disk > numDisk || disk == 0)
 		return false;
 	size_t posDisk = numDisk + 1;
 	size_t posCol;
@@ -158,6 +158,11 @@ void CHaNoiTower::init(size_t numDisk)
 	}
 }
 
+size_t CHaNoiTower::getNumOfDisk()
+{
+	return numDisk;
+}
+
 CGame::CGame()
 {
 	m_numOfPlayer = 0;
@@ -204,6 +209,11 @@ bool CGame::giveup(size_t player)
 bool CGame::isGiveup(size_t player)
 {
 	return status[player] == GIVEUP;
+}
+
+size_t CGame::getNumberDisk()
+{
+	return tower[0].getNumOfDisk();
 }
 
 string CGame::getHistory(size_t player)
