@@ -221,7 +221,6 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 					m_msgString += "Ban khong the bo cuoc\r\n";
 				break;
 			}
-
 			UpdateData(FALSE);
 			break;
 		}
@@ -236,6 +235,19 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				m_msgString += strResult[3] + _T("\r\n");
 				m_msgString += strResult[4] + _T("\r\n");
 			}
+			UpdateData(FALSE);
+			break;
+		}
+		case 4:
+		{
+			std::string winner = ConvertToChar(strResult[2].Mid(0, strResult[2].Find(_T("\t"), 0)));
+			m_msgString += strResult[2] + _T("\r\n");
+			m_msgString += strResult[3] + _T("\r\n");
+			m_msgString += strResult[4] + _T("\r\n");
+			m_msgString += "Winner: ";
+			m_msgString += winner.c_str();
+			m_msgString += "\r\n";
+
 			UpdateData(FALSE);
 			break;
 		}
