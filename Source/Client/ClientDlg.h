@@ -30,7 +30,7 @@ protected:
 public:
 	LRESULT SockMsg(WPARAM wParam,LPARAM lParam);
 	char* ConvertToChar(const CString &s);
-	void Split(CString src,CString des[2]);
+	void Split(CString src,CString des[5]);
 	void mSend(CString Command);
 	int mRecv(CString &Command);
 
