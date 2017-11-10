@@ -52,8 +52,11 @@ BOOL CServerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	MaxClient = 3;
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+	GotoDlgCtrl(GetDlgItem(IDC_LISTEN));
+
+	return FALSE;  // return TRUE unless you set the focus to a control
 }
 
 // If you add a minimize button to your dialog, you will need the code below
@@ -171,8 +174,9 @@ void CServerDlg::OnBnClickedListen()
 	pSock = new SockName[5];
 
 	srand((unsigned)time(NULL));
-	//R = rand() % 8 + 3;
-	R = 3;
+	GotoDlgCtrl(GetDlgItem(IDC_CANCEL));
+	R = rand() % 4 + 3;
+	//R = 3;
 }
 
 void CServerDlg::OnBnClickedCancel()
@@ -200,15 +204,6 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 	{
 		int post = -1, dpos = -1;
 
-		for (int i = 0; i < number_Socket; i++)
-		{
-			if (pSock[i].sockClient == wParam)
-			{
-				if (i < number_Socket)
-					post = i;
-			}
-		}
-
 		CString temp;
 		if (mRecv(wParam, temp) < 0)
 			break;
@@ -234,7 +229,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				}
 			}
 
-			if (t == 0 && number_Socket < 1)//< 3)
+			if (t == 0 && number_Socket < MaxClient)
 			{
 				// Client: "Dang nhap thanh cong"
 				// Server: "[Username] login"
@@ -245,7 +240,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				number_Socket++;
 
 				// check if number_client == 3 ? startGame : wait for
-				if (number_Socket < 1)//3)
+				if (number_Socket < MaxClient)//3)
 				{
 					// send to client messenge "Waiting for the other player"
 					Command = _T("2\r\n");
@@ -267,7 +262,6 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 
 					if (game.isEndGame())
 						endGame();
-
 				}
 				
 				UpdateData(FALSE);
@@ -298,7 +292,7 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			//case 1:	// Waiting for the other player
 			//case 2:	// Start game
 			case 3:		// Give up
-				if (number_Socket < 1)//< 3)
+				if (number_Socket < MaxClient)//< 3)
 					Command = "2\r\n3\r\n0\r\n";
 				else
 				{
@@ -314,6 +308,9 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			}
 			mSend(wParam, Command);
 			UpdateData(FALSE);
+
+			if (game.isEndGame())
+				endGame();
 
 			break;
 		}
@@ -348,6 +345,11 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 
 			if (game.isEndGame())
 				endGame();
+			else if (game.isSolved(post))
+			{
+				Command = "2\r\n1\r\n1\r\n";
+				mSend(wParam, Command);
+			}
 
 			break;
 		}
@@ -408,31 +410,51 @@ LRESULT CServerDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-string CServerDlg::notificationEndGame()
+CString CServerDlg::notificationEndGame()
 {
 	vector<pair<string, size_t>>tableScore(number_Socket);
 	for (size_t i = 0; i < number_Socket; i++)
-		tableScore[i] = make_pair(pSock[i].Name, game.getScore(i));
+		if (game.isGiveup(i))
+			tableScore[i] = make_pair(pSock[i].Name, 0);
+		else
+			tableScore[i] = make_pair(pSock[i].Name, game.getScore(i));
 
-	for (size_t i = 0; i < number_Socket - 1; i++)
-		for (size_t j = 0; j < number_Socket; j++)
-			if (get<1>(tableScore[j]) < get<1>(tableScore[i]))
+	size_t score_1, score_2;
+	size_t i, j;
+
+	for (i = 0; i < number_Socket - 1; i++)
+	{
+		for (j = i + 1; j < number_Socket; j++)
+		{
+			score_1 = get<1>(tableScore[i]);
+			score_2 = get<1>(tableScore[j]);
+
+			if (score_1 > 0 && score_2 > 0)
+			{
+				if (score_1 > score_2)
+					tableScore[i].swap(tableScore[j]);
+			}
+			else if (score_2 > score_1)
 				tableScore[i].swap(tableScore[j]);
-
+		}
+	}
+	
 	stringstream ss;
 	for (size_t i = 0; i < number_Socket; i++)
-		ss << get<0>(tableScore[i]) << "\t" << get<1>(tableScore[i]) << "\r\n";
+		ss << get<0>(tableScore[i]) << "  " << get<1>(tableScore[i]) << "\r\n";
 
-	return ss.str();
+	return CString(ss.str().c_str());
 }
 
 bool CServerDlg::endGame()
 {
 	Command = "2\r\n4\r\n";
-	Command += notificationEndGame().c_str();
+	Command += notificationEndGame();
 	for (size_t i = 0; i < number_Socket; i++)
 	{
 		mSend(pSock[i].sockClient, Command);
-		closesocket(pSock[i].sockClient);
+		//closesocket(pSock[i].sockClient);
 	}
+
+	return true;
 }

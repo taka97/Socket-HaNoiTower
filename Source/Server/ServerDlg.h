@@ -23,7 +23,6 @@ public:
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-
 	// Implementation
 protected:
 	HICON m_hIcon;
@@ -57,6 +56,7 @@ public:
 	CString strResult[5];
 	CString Command;
 	int R;
+	size_t MaxClient;
 
 	CGame game;
 
@@ -64,6 +64,6 @@ public:
 	afx_msg void OnBnClickedListen();
 	afx_msg void OnBnClickedCancel();
 
-	string notificationEndGame();
+	CString notificationEndGame();
 	bool endGame();
 };

@@ -60,8 +60,11 @@ BOOL CClientDlg::OnInitDialog()
 
 	IP = "127.0.0.1";
 	GetDlgItem(IDC_LOGOUT)->EnableWindow(FALSE);
-	//GetDlgItem(IDC_GIVEUP)->EnableWindow(FALSE);
-	//GetDlgItem(IDC_MOVE)->EnableWindow(FALSE);
+	GetDlgItem(IDC_GIVEUP)->EnableWindow(FALSE);
+	GetDlgItem(IDC_MOVE)->EnableWindow(FALSE);
+	GetDlgItem(IDC_DISK)->EnableWindow(FALSE);
+	GetDlgItem(IDC_TOCOL)->EnableWindow(FALSE);
+	GotoDlgCtrl(GetDlgItem(IDC_LOGIN));
 	UpdateData(FALSE);
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -164,7 +167,6 @@ int CClientDlg::mRecv(CString &Command)
 
 LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 {
-
 	if (WSAGETSELECTERROR(lParam))
 	{
 		// Display the error and close the socket
@@ -186,7 +188,7 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 
 		switch (flag1)
 		{
-		case 1:
+		case 1:	//login
 		{
 			if (flag2 == 1)
 			{
@@ -201,26 +203,56 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 			break;
 		}
 
-		case 2:
+		case 2://process
 		{
 			switch (flag2)
 			{
-			case 1:
-				m_msgString += "Dang cho nguoi choi khac\r\n";
+			case 1:	// wait for
+				if (flag3 == 0)
+				{
+					m_msgString += "Dang cho nguoi choi khac\r\n";
+				}
+				else //flag3 == 1
+				{
+					m_msgString += "Game Solved\r\n";
+					m_msgString += "Dang cho nguoi choi khac\r\n";
+					GetDlgItem(IDC_DISK)->EnableWindow(FALSE);
+					GetDlgItem(IDC_TOCOL)->EnableWindow(FALSE);
+					GetDlgItem(IDC_MOVE)->EnableWindow(FALSE);
+					GetDlgItem(IDC_GIVEUP)->EnableWindow(FALSE);
+					GotoDlgCtrl(GetDlgItem(IDC_LOGOUT));
+				}
 				break;
-			case 2:
+			case 2: // start game
 				m_msgString = "---- HA NOI TOWER GAME ----\r\n";
 				m_msgString += strResult[2] + _T("\r\n");
 				m_msgString += strResult[3] + _T("\r\n");
 				m_msgString += strResult[4] + _T("\r\n");
+
+				GetDlgItem(IDC_DISK)->EnableWindow(TRUE);
+				GetDlgItem(IDC_TOCOL)->EnableWindow(TRUE);
+				GetDlgItem(IDC_MOVE)->EnableWindow(TRUE);
+				GetDlgItem(IDC_GIVEUP)->EnableWindow(TRUE);
+				GotoDlgCtrl(GetDlgItem(IDC_DISK));
 				break;
-			case 3:
-				if (flag3 == 1)
+			case 3: //
+				if (_ttoi(strResult[2]) == 1)
 					m_msgString += "Ban da bo cuoc\r\n";
 				else
 					m_msgString += "Ban khong the bo cuoc\r\n";
 				break;
+			case 4:
+				std::string winner = ConvertToChar(strResult[2].Mid(0, strResult[2].Find(_T("  "), 0)));
+				m_msgString += "-----------------------\r\nUser  Score\r\n";
+				m_msgString += strResult[2] + _T("\r\n");
+				m_msgString += strResult[3] + _T("\r\n");
+				m_msgString += strResult[4] + _T("\r\n");
+				m_msgString += "Winner: ";
+				m_msgString += winner.c_str();
+				m_msgString += "\r\n";
+				break;
 			}
+		
 			UpdateData(FALSE);
 			break;
 		}
@@ -235,19 +267,6 @@ LRESULT CClientDlg::SockMsg(WPARAM wParam, LPARAM lParam)
 				m_msgString += strResult[3] + _T("\r\n");
 				m_msgString += strResult[4] + _T("\r\n");
 			}
-			UpdateData(FALSE);
-			break;
-		}
-		case 4:
-		{
-			std::string winner = ConvertToChar(strResult[2].Mid(0, strResult[2].Find(_T("\t"), 0)));
-			m_msgString += strResult[2] + _T("\r\n");
-			m_msgString += strResult[3] + _T("\r\n");
-			m_msgString += strResult[4] + _T("\r\n");
-			m_msgString += "Winner: ";
-			m_msgString += winner.c_str();
-			m_msgString += "\r\n";
-
 			UpdateData(FALSE);
 			break;
 		}
@@ -343,6 +362,10 @@ void CClientDlg::OnBnClickedGiveup()
 {
 	// TODO: Add your control notification handler code here
 	Command = "2\r\n3\r\n";
+	GetDlgItem(IDC_DISK)->EnableWindow(FALSE);
+	GetDlgItem(IDC_TOCOL)->EnableWindow(FALSE);
+	GetDlgItem(IDC_GIVEUP)->EnableWindow(FALSE);
+	GetDlgItem(IDC_MOVE)->EnableWindow(FALSE);
 	mSend(Command);
 }
 
@@ -389,7 +412,7 @@ bool CClientDlg::checkCol(CString &toCol)
 		return true;
 	if (str == "a" || str == "b" || str == "c")
 	{
-		str[0] -= 'A';
+		str[0] -= 'a' - 'A';
 		toCol = str.c_str();
 		return true;
 	}

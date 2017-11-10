@@ -116,7 +116,7 @@ BEGIN
             VALUE "InternalName", "Server.exe"
             VALUE "LegalCopyright", "Taka Company.  All rights reserved."
             VALUE "OriginalFilename", "Server.exe"
-            VALUE "ProductName", "Ha Noi Tower"
+            VALUE "ProductName", "Ha Noi Tower Server"
             VALUE "ProductVersion", "1.0.0.0"
         END
     END
