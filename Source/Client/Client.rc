@@ -124,12 +124,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Taka Company"
             VALUE "FileDescription", "Ha Noi Tower Client"
-            VALUE "FileVersion", "1.0.0.1"
+            VALUE "FileVersion", "1.0.0.0"
             VALUE "InternalName", "Client.exe"
             VALUE "LegalCopyright", "Taka Company.  All rights reserved."
             VALUE "OriginalFilename", "Client.exe"
             VALUE "ProductName", "Ha Noi Tower"
-            VALUE "ProductVersion", "1.0.0.1"
+            VALUE "ProductVersion", "1.0.0.0"
         END
     END
     BLOCK "VarFileInfo"
