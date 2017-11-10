@@ -57,6 +57,7 @@ public:
 	bool isReady();
 	bool giveup(size_t player);
 	bool isGiveup(size_t player);
+	bool isSolved(size_t player);
 	string getHistory(size_t player);
 	string getStatus(size_t player);
 	bool move(size_t player, size_t disk, string toCol);
